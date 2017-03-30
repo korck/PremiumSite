@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,12 +18,17 @@ import users.User;
 public class Permissions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().print("<center>");
-		HttpSession session = request.getSession();
+	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+		HttpServletRequest httpRequest = (HttpServletRequest)request;
+		HttpSession session = httpRequest.getSession();
 		if (session.getAttribute("permission").toString() != "2") {
 			response.sendRedirect("verbotten.jsp");
-		} else {
+			return;
+		}
+		chain.doFilter(request, response);
+	}
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().print("<center>");
 			Workdb db = new Workdb();
 			ArrayList<User> users = db.getAllUsers();
 			response.getWriter().println("<h1>Upgrade to premium</h1>");
@@ -45,7 +51,6 @@ public class Permissions extends HttpServlet {
 				response.getWriter().println("</tr>");
 			}
 			response.getWriter().println("</table>");
-		}
 		response.getWriter().print("</center>");
 	}
 }
