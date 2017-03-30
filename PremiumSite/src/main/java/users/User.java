@@ -14,6 +14,10 @@ public class User {
 		this.permissions = permissions;
 	}
 	
+	public User() {
+		
+	}
+
 	public String getUsername() {
 		return username;
 	}
