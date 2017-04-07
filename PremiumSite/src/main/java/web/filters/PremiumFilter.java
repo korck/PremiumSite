@@ -21,7 +21,7 @@ public class PremiumFilter implements Filter {
 		HttpServletRequest httpRequest  = (HttpServletRequest) request;
 		HttpSession session = httpRequest.getSession();
 		if(session.getAttribute("conf")==null) {
-			response.getWriter().print("Nie masz uprawnien do przegladania tej strony");
+			response.getWriter().print("<h1>Nie masz uprawnien do przegladania tej strony</h1>");
 			return;
 		}
 		
